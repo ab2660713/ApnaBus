@@ -1,5 +1,4 @@
-const mongoose = require("mongoose");
-
+import mongoose from "mongoose";
 const routeSchema = new mongoose.Schema({
   from: { type: String, required: true },
   to: { type: String, required: true },
@@ -7,4 +6,4 @@ const routeSchema = new mongoose.Schema({
   duration: { type: String, required: true },
 });
 
-module.exports = mongoose.model("Route", routeSchema);
+export default mongoose.model("Route", routeSchema);

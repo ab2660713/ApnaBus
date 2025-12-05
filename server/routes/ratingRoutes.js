@@ -1,6 +1,6 @@
-const express = require('express')
-const { getRatings, addRating } = require('../controllers/ratingController')
-const protect = require('../middleware/authMiddleware')
+import express from "express";
+import { getRatings, addRating }  from '../controllers/ratingController.js'
+import protect  from "../middleware/authMiddleware.js"
 
 
 const router = express.Router()
@@ -9,4 +9,4 @@ router.get("/:bsid", getRatings)
 router.post("/:bsid", protect, addRating)
 
 
-module.exports = router
+export default router

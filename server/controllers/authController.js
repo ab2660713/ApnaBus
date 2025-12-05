@@ -1,8 +1,8 @@
-const User = require("../models/userModel")
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
+import User  from "../models/userModel.js"
+import bcrypt  from 'bcryptjs'
+import jwt  from 'jsonwebtoken'
 
-const registerUser = async (req, res) => {
+export const registerUser = async (req, res) => {
 
     const { name, phone, email, password, age, gender } = req.body
 
@@ -56,7 +56,7 @@ const registerUser = async (req, res) => {
     })
 }
 
-const loginUser = async (req, res) => {
+ export const loginUser = async (req, res) => {
     const { phone, password } = req.body;
 
     if (!phone || !password) {
@@ -103,7 +103,7 @@ const loginUser = async (req, res) => {
 
 
 
-const privateController = async (req, res) => {
+export const privateController = async (req, res) => {
     res.json({
         msg: "Request By : ",
         user: req.user
@@ -121,4 +121,3 @@ const generateToken = (id) => {
 
 
 
-module.exports = { registerUser, loginUser, privateController }

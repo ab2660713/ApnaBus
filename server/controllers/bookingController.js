@@ -1,7 +1,7 @@
-const Booking = require("../models/bookingModel")
-const Bus = require("../models/busModel")
+import Booking from "../models/bookingModel.js"
+import Bus from "../models/busModel.js"
 
-const addBooking = async (req, res) => {
+export const addBooking = async (req, res) => {
 
 
     const { ticketCount } = req.body;
@@ -46,7 +46,7 @@ const addBooking = async (req, res) => {
 
 }
 
-const getBooking = async (req, res) => {
+export const getBooking = async (req, res) => {
 
     const booking = await Booking.findById(req.params.bid)
 
@@ -58,7 +58,7 @@ const getBooking = async (req, res) => {
     res.status(200).json(booking)
 
 }
-const cancelBooking = async (req, res) => {
+export const cancelBooking = async (req, res) => {
 
     const booking = await Booking.findById(req.params.bid);
 
@@ -104,7 +104,7 @@ const cancelBooking = async (req, res) => {
     res.status(200).json(updatedBooking);
 };
 
-const getAllMyBookings = async (req, res) => {
+export const getAllMyBookings = async (req, res) => {
 
     const myBookings = await Booking.find({ user: req.user._id }).populate('bus')
 
@@ -117,4 +117,3 @@ const getAllMyBookings = async (req, res) => {
 
 }
 
-module.exports = { addBooking, getBooking, cancelBooking, getAllMyBookings }

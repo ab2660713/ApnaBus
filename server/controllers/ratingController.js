@@ -1,7 +1,7 @@
-const Rating = require("../models/ratingModel")
+import Rating  from "../models/ratingModel.js"
 
 
-const getRatings = async (req, res) => {
+export const getRatings = async (req, res) => {
 
     const ratings = await Rating.find({ bus: req.params.bsid }).populate('user').populate('bus')
 
@@ -15,7 +15,7 @@ const getRatings = async (req, res) => {
 
 }
 
-const addRating = async (req, res) => {
+export const addRating = async (req, res) => {
     const { comment, rate } = req.body
 
     if (!comment || !rate) {
@@ -34,4 +34,3 @@ const addRating = async (req, res) => {
 
 }
 
-module.exports = { getRatings, addRating }

@@ -1,5 +1,5 @@
-const express = require('express')
-const { getBuses, getBus, searchBuses, bookSeats, checkSeatAvailability, lockSeat } = require('../controllers/busController')
+import express from "express";
+import { getBuses, getBus, searchBuses, bookSeats, checkSeatAvailability, lockSeat }  from '../controllers/busController.js'
 
 const router = express.Router()
 
@@ -9,5 +9,5 @@ router.get("/:id", getBus)
 router.put("/book-seats", bookSeats);
 router.post("/check-seat", lockSeat);
 
-module.exports = router
+export default router
 

@@ -1,6 +1,6 @@
-const Route = require("../models/routeModel");
+import Route from "../models/routeModel.js";
 
-exports.getRoutes = async (req, res) => {
+export const getRoutes = async (req, res) => {
   try {
     const routes = await Route.find();
     res.status(200).json(routes);

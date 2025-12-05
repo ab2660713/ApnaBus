@@ -1,6 +1,6 @@
-const express = require('express')
-const { addBooking, cancelBooking, getAllMyBookings, getBooking } = require('../controllers/bookingController')
-const protect = require("../middleware/authMiddleware")
+import express from "express";
+import { addBooking, cancelBooking, getAllMyBookings, getBooking } from '../controllers/bookingController.js'
+import protect  from "../middleware/authMiddleware.js"
 
 
 
@@ -16,4 +16,4 @@ router.patch("/cancel/:bid", protect, cancelBooking);
 
 
 
-module.exports = router
+export default router

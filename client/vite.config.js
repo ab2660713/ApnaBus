@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target: 'http://localhost:8080',
+        target: 'https://apnabus.onrender.com/',
         changeOrigin: true,
         secure: false
       }

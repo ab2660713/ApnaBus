@@ -1,8 +1,8 @@
-const Bus = require("../models/busModel")
-const User = require("../models/userModel")
-const Booking = require("../models/bookingModel")
+import Bus  from "../models/busModel.js"
+import User  from "../models/userModel.js"
+import Booking  from "../models/bookingModel.js"
 
-const addBus = async (req, res) => {
+export const addBus = async (req, res) => {
 
     const {
         name,
@@ -70,7 +70,7 @@ const addBus = async (req, res) => {
 
     res.status(201).json(bus)
 }
-const getDashboardStats = async (req, res) => {
+export const getDashboardStats = async (req, res) => {
     try {
         // Total Revenue
         const revenue = await Booking.aggregate([
@@ -94,7 +94,7 @@ const getDashboardStats = async (req, res) => {
     }
 };
 
-const updateBus = async (req, res) => {
+export const updateBus = async (req, res) => {
 
     const updatedBus = await Bus.findByIdAndUpdate(req.params.bsid, req.body, { new: true })
 
@@ -106,7 +106,7 @@ const updateBus = async (req, res) => {
     res.status(200).json(updatedBus)
 }
 
-const getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
     const users = await User.find()
 
     if (!users) {
@@ -118,7 +118,7 @@ const getAllUsers = async (req, res) => {
     res.status(200).json(users)
 }
 
-const getAllRatings = async (req, res) => {
+export const getAllRatings = async (req, res) => {
     const ratings = await Booking.find({ rating: { $gt: 0 } })
         .populate("user")
         .populate("bus");
@@ -132,7 +132,7 @@ const getAllRatings = async (req, res) => {
 };
 
 
-const getAllBookings = async (req, res) => {
+export const getAllBookings = async (req, res) => {
     const bookings = await Booking.find().populate('user').populate('bus')
 
     if (!bookings) {
@@ -144,7 +144,7 @@ const getAllBookings = async (req, res) => {
     res.status(200).json(bookings)
 }
 
-const updateBooking =async (req, res) => {
+export const updateBooking =async (req, res) => {
 
     const oldBooking = await Booking.findById(req.params.bid)
     if (!oldBooking) {
@@ -183,7 +183,7 @@ const updateBooking =async (req, res) => {
 
     res.status(200).json(updatedBooking)
 }
-const deleteBus = async (req, res) => {
+export const deleteBus = async (req, res) => {
     try {
       const bus = await Bus.findByIdAndDelete(req.params.id);
   
@@ -194,7 +194,7 @@ const deleteBus = async (req, res) => {
       res.status(500).json({ msg: "Delete error", error: err.message });
     }
   }
-const updateUser = async (req, res) => {
+export const updateUser = async (req, res) => {
 
 
     const user = await User.findById(req.params.uid)
@@ -218,4 +218,3 @@ const updateUser = async (req, res) => {
 
 
 
-module.exports = { addBus, updateBus, getAllUsers, getAllRatings, getAllBookings,deleteBus, updateBooking, updateUser ,getDashboardStats}

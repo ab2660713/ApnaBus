@@ -1,12 +1,12 @@
-const Bus = require("../models/busModel")
+import Bus from "../models/busModel.js"
 
-const getBuses = async (req, res) => {
+export const getBuses = async (req, res) => {
     const allBuses = await Bus.find()
     
     res.status(200).json(allBuses)
 }
 
-const getBus = async (req, res) => {
+export const getBus = async (req, res) => {
   try {
     const bus = await Bus.findById(req.params.id);
 
@@ -20,7 +20,7 @@ const getBus = async (req, res) => {
   }
 }
 
-const searchBuses = async (req, res) => {
+export const searchBuses = async (req, res) => {
     try {
       const { from, to } = req.query;
   
@@ -40,7 +40,7 @@ const searchBuses = async (req, res) => {
       res.status(500).json({ msg: "Server Error", error: err.message });
     }
   };
-   const bookSeats = async (req, res) => {
+  export const bookSeats = async (req, res) => {
     try {
       const { busId, seats } = req.body;
   
@@ -77,7 +77,7 @@ const searchBuses = async (req, res) => {
       return res.status(500).json({ error: "Server error", details: error.message });
     }
   };
-const checkSeatAvailability = async (req, res) => {
+  export const checkSeatAvailability = async (req, res) => {
     try {
       const { busId, seat } = req.body;
   
@@ -96,7 +96,7 @@ const checkSeatAvailability = async (req, res) => {
     }
   };
  
-const  lockSeat = async (req, res) => {
+  export const  lockSeat = async (req, res) => {
     try {
       const { busId, seatNumber } = req.body;
   
@@ -126,4 +126,3 @@ const  lockSeat = async (req, res) => {
   };
   
 
-module.exports = { getBuses, getBus,searchBuses,bookSeats,checkSeatAvailability,lockSeat }

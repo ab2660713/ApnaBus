@@ -1,5 +1,4 @@
-const { default: mongoose } = require("mongoose");
-
+import mongoose from "mongoose";
 const ratingSchema = new mongoose.Schema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
@@ -24,5 +23,4 @@ const ratingSchema = new mongoose.Schema({
     timestamps: true
 })
 
-
-module.exports = mongoose.model('Rating', ratingSchema)
+export default mongoose.model('Rating', ratingSchema)
