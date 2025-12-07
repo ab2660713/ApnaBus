@@ -19,7 +19,7 @@ function Header() {
   };
 
   return (
-    <header className="bg-white shadow-md sticky top-0 z-50 backdrop-blur-lg">
+    <header className="bg-white shadow-md sticky top-0 z-[999] backdrop-blur-lg overflow-visible">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex justify-between items-center">
 
         {/* LEFT LOGO */}
@@ -34,30 +34,21 @@ function Header() {
 
         {/* DESKTOP NAV */}
         <nav className="hidden md:flex items-center gap-8">
-
           {user?.isAdmin ? (
-            <>
-              <Link to="/admin" className="text-gray-700 hover:text-blue-600 font-medium transition">
-                Dashboard
-              </Link>
-            </>
+            <Link className="text-gray-700 hover:text-blue-600 font-medium" to="/admin">
+              Dashboard
+            </Link>
           ) : (
             <>
-              <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium transition">
-                Home
-              </Link>
-              <Link to="/buses" className="text-gray-700 hover:text-blue-600 font-medium transition">
-                Buses
-              </Link>
-              <Link to="/mybooking" className="text-gray-700 hover:text-blue-600 font-medium transition">
-                My Bookings
-              </Link>
+              <Link className="text-gray-700 hover:text-blue-600 font-medium" to="/">Home</Link>
+              <Link className="text-gray-700 hover:text-blue-600 font-medium" to="/buses">Buses</Link>
+              <Link className="text-gray-700 hover:text-blue-600 font-medium" to="/mybooking">My Bookings</Link>
             </>
           )}
 
           {/* PROFILE DROPDOWN */}
           {user ? (
-            <div className="relative">
+            <div className="relative z-[9999]">
               <button
                 onClick={() => setProfileOpen(!profileOpen)}
                 className="flex items-center gap-2 hover:bg-gray-100 px-3 py-2 rounded-lg transition"
@@ -67,7 +58,7 @@ function Header() {
               </button>
 
               {profileOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg border rounded-lg overflow-hidden">
+                <div className="absolute right-0 mt-2 w-40 bg-white shadow-lg border rounded-lg overflow-hidden z-[9999]">
                   <button
                     onClick={handleLogout}
                     className="block w-full text-left px-4 py-2 text-red-600 hover:bg-gray-100 font-medium"
@@ -95,24 +86,17 @@ function Header() {
 
       {/* MOBILE NAV MENU */}
       {menuOpen && (
-        <div className="md:hidden bg-white border-t shadow-md">
+        <div className="md:hidden bg-white border-t shadow-md z-[999] relative">
           <div className="flex flex-col gap-4 p-4">
-
             {user?.isAdmin ? (
-              <Link to="/admin" className="text-gray-700 hover:text-blue-600 font-medium">
+              <Link className="text-gray-700 hover:text-blue-600 font-medium" to="/admin">
                 Dashboard
               </Link>
             ) : (
               <>
-                <Link to="/" className="text-gray-700 hover:text-blue-600 font-medium">
-                  Home
-                </Link>
-                <Link to="/buses" className="text-gray-700 hover:text-blue-600 font-medium">
-                  Buses
-                </Link>
-                <Link to="/mybooking" className="text-gray-700 hover:text-blue-600 font-medium">
-                  My Bookings
-                </Link>
+                <Link className="text-gray-700 hover:text-blue-600 font-medium" to="/">Home</Link>
+                <Link className="text-gray-700 hover:text-blue-600 font-medium" to="/buses">Buses</Link>
+                <Link className="text-gray-700 hover:text-blue-600 font-medium" to="/mybooking">My Bookings</Link>
               </>
             )}
 
