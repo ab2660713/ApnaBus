@@ -17,6 +17,7 @@ import {
   getBuses,
   getBus
 } from "../controllers/busController.js";
+import { viewAllBookings } from "../controllers/bookingController.js";
 
 const router = express.Router();
 
@@ -28,6 +29,7 @@ router.get('/buses', adminProtect, getBuses);
 router.get('/bus/:id', adminProtect, getBus);
 router.get('/dashboard-stats', adminProtect, getDashboardStats);
 router.delete('/bus/:id', adminProtect, deleteBus);
+router.get("/admin/view-bookings", adminProtect, viewAllBookings);
 
 router.get('/view-users', adminProtect, getAllUsers);
 router.get('/view-ratings', adminProtect, getAllRatings);

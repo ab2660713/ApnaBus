@@ -1,27 +1,35 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Bus,
   Users,
   Ticket,
-  Settings,
+  LogOut
 } from "lucide-react";
+import { logoutUser } from "../features/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 function AdminSidebar() {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const menuItems = [
     { name: "Dashboard", icon: <LayoutDashboard size={20} />, path: "/admin" },
     { name: "Buses", icon: <Bus size={20} />, path: "/admin/buses" },
     { name: "Bookings", icon: <Ticket size={20} />, path: "/admin/view-bookings" },
     { name: "Users", icon: <Users size={20} />, path: "/admin/view-users" },
-  
   ];
-  
+ const dispatch=useDispatch()
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate("/login");
+  };
 
   return (
-    <aside className="w-64 bg-gray-900 text-white min-h-screen p-4 hidden lg:block">
-      <div className="flex items-center mb-8">
+    <aside className="w-64 bg-gray-900 text-white min-h-screen p-4 flex flex-col">
+      
+      {/* LOGO */}
+      <div className="flex items-center mb-10">
         <svg
           className="w-8 h-8 text-blue-500"
           fill="none"
@@ -38,7 +46,8 @@ function AdminSidebar() {
         <span className="ml-2 text-xl font-bold">ApnaBus Admin</span>
       </div>
 
-      <nav className="space-y-2">
+      {/* MENU ITEMS */}
+      <nav className="space-y-2 flex-1">
         {menuItems.map((item) => {
           const isActive = location.pathname === item.path;
 
@@ -59,17 +68,16 @@ function AdminSidebar() {
         })}
       </nav>
 
-      <div className="fixed bottom-4 right-4 w-64">
-  <div className="bg-white shadow-lg rounded-lg p-4 flex items-center gap-3">
-    <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold">
-      A
-    </div>
-    <div>
-      <p className="text-sm font-semibold text-gray-900">Admin User</p>
-      <p className="text-xs text-gray-500">admin@apnabus.com</p>
-    </div>
-  </div>
-</div>
+      {/* FOOTER WITH LOGOUT BUTTON */}
+      <div className="mt-6">
+        <button
+          onClick={handleLogout}
+          className="w-full flex items-center gap-3 bg-red-600 hover:bg-red-700 px-4 py-3 rounded-lg transition text-white font-medium"
+        >
+          <LogOut size={20} />
+          Logout
+        </button>
+      </div>
 
     </aside>
   );

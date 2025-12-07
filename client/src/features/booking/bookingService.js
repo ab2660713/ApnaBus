@@ -52,12 +52,23 @@ const deleteBooking = async (id, token) => {
   const res = await axios.delete(`/api/booking/${id}`, options);
   return res.data;
 };
+const getBookedSeats = async (busId, date, token) => {
+  const options = {
+    headers: { Authorization: `Bearer ${token}` },
+  };
 
+  const res = await axios.get(
+    `/api/booking/booked-seats?busId=${busId}&date=${date}`,
+    options
+  );
+
+  return res.data;
+};
 const bookingService = {
   getAllBookings,
   getSingleBooking,
   createBooking,
- 
+ getBookedSeats,
   deleteBooking,
 };
 

@@ -45,7 +45,30 @@ export const addBooking = async (req, res) => {
 
 
 }
-
+export const updateBooking = async (req, res) => {
+    try {
+      const { status, ticketCount } = req.body;
+  
+      const updated = await Booking.findByIdAndUpdate(
+        req.params.bid,
+        { status, ticketCount },
+        { new: true }
+      ).populate("bus").populate("user");
+  
+      if (!updated) {
+        return res.status(404).json({ message: "Booking not found!" });
+      }
+  
+      res.status(200).json({
+        message: "Booking updated successfully!",
+        booking: updated
+      });
+  
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Error updating booking!" });
+    }
+  };
 export const getBooking = async (req, res) => {
 
     const booking = await Booking.findById(req.params.bid)
@@ -106,7 +129,10 @@ export const cancelBooking = async (req, res) => {
 
 export const getAllMyBookings = async (req, res) => {
 
-    const myBookings = await Booking.find({ user: req.user._id }).populate('bus')
+    const myBookings = await Booking.find({ user: req.user._id })
+    .populate("bus")
+    .populate("user")
+    .sort({ createdAt: -1 });
 
     if (!myBookings) {
         res.status(404)
@@ -117,3 +143,18 @@ export const getAllMyBookings = async (req, res) => {
 
 }
 
+// ADMIN: View all bookings with user + bus populated
+export const viewAllBookings = async (req, res) => {
+    try {
+      const bookings = await Booking.find()
+        .populate("user")
+        .populate("bus")
+        .sort({ createdAt: -1 });
+  
+      res.status(200).json({ bookings });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: "Failed to load bookings!" });
+    }
+  };
+  

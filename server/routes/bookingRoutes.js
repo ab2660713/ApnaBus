@@ -1,5 +1,5 @@
 import express from "express";
-import { addBooking, cancelBooking, getAllMyBookings, getBooking } from '../controllers/bookingController.js'
+import { addBooking, cancelBooking, getAllMyBookings, getBooking, updateBooking } from '../controllers/bookingController.js'
 import protect  from "../middleware/authMiddleware.js"
 
 
@@ -13,6 +13,8 @@ router.post('/:bsid', protect, addBooking)
 router.put('/:bid', protect, cancelBooking)
 
 router.patch("/cancel/:bid", protect, cancelBooking);
+router.put("/booking/:bid", protect, updateBooking);
+// router.get("/booked-seats", protect, getBookedSeats);
 
 
 

@@ -59,7 +59,13 @@ function MyBookingsPage() {
 
       {/* MAIN CONTENT */}
       <div className="max-w-5xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
-
+  {/* 🔄 REFRESH BUTTON */}
+  <button
+    onClick={fetchBookings}
+    className="mb-6 px-5 py-3 bg-blue-600 text-white font-bold rounded-xl shadow hover:bg-blue-700 transition"
+  >
+    Refresh Bookings 🔄
+  </button>
         {bookings.length === 0 ? (
           <div className="text-center mt-10">
             <p className="text-gray-600 text-lg font-medium">

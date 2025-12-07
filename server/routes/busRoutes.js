@@ -7,7 +7,7 @@ router.get("/search", searchBuses);
 router.get("/", getBuses)
 router.get("/:id", getBus)
 router.put("/book-seats", bookSeats);
-router.post("/check-seat", lockSeat);
+router.post("/lock-seat", lockSeat);
 
 export default router
 
