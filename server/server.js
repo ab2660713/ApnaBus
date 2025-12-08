@@ -27,7 +27,7 @@ if (process.env.NODE_ENV === "production") {
 
     app.use(express.static(path.join(__dirname, "client/dist")));
 
-    app.get("*", (req, res) => {
+    app.get("/", (req, res) => {
         res.sendFile(path.join(__dirname, "client", "dist","index.html"));
     });
 
@@ -52,7 +52,7 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/booking", bookingRoutes);
 app.use("/api/bus", busRoutes);
 app.use("/api/rating", ratingRoutes);
-app.use("/api/routes", routeRoutes);
+// app.use("/api/routes", routeRoutes);
 
 // Error Handler
 app.use(errorHandler);
