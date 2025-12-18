@@ -19,26 +19,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Fix __dirname for ES Modules
-const __dirname = path.resolve();
-
-// ---------------- PRODUCTION MODE ----------------
-if (process.env.NODE_ENV === "production") {
-
-    app.use(express.static(path.join(__dirname, "client/dist")));
-
-    app.get("/", (req, res) => {
-        res.sendFile(path.join(__dirname, "client", "dist","index.html"));
-    });
-
-} else {
-
-    app.get("/", (req, res) => {
-        res.send("API IS RUNNING... (development mode)");
-    });
-
-}
-
 // ---------------- API ROUTES ----------------
 import authRoutes from "./routes/authRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
@@ -46,6 +26,20 @@ import bookingRoutes from "./routes/bookingRoutes.js";
 import busRoutes from "./routes/busRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
 import routeRoutes from "./routes/routeRoute.js";
+
+// Default Route
+if (process.env.NODE_ENV === "production") {
+  const __dirname = path.resolve();
+  app.use(express.static(path.join(__dirname, "/client/dist")));
+
+  app.get("/", (req, res) =>
+    res.sendFile(path.resolve(__dirname, "client", "dist", "index.html"))
+  );
+} else {
+  app.get("/", (req, res) => {
+    res.send("API is running... (development mode)");
+  });
+}
 
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", adminRoutes);
@@ -59,5 +53,5 @@ app.use(errorHandler);
 
 // ---------------- START SERVER ----------------
 app.listen(PORT, () => {
-    console.log(`SERVER IS RUNNING AT PORT : ${PORT}`.bgBlue.black);
+  console.log(`SERVER IS RUNNING AT PORT : ${PORT}`.bgBlue.black);
 });
