@@ -50,7 +50,7 @@ export const updateBooking = async (req, res) => {
       const { status, ticketCount } = req.body;
   
       const updated = await Booking.findByIdAndUpdate(
-        req.params.bid,
+        req.params.id,
         { status, ticketCount },
         { new: true }
       ).populate("bus").populate("user");

@@ -40,43 +40,43 @@ export const searchBuses = async (req, res) => {
       res.status(500).json({ msg: "Server Error", error: err.message });
     }
   };
-  export const bookSeats = async (req, res) => {
-    try {
-      const { busId, seats } = req.body;
+  // export const bookSeats = async (req, res) => {
+  //   try {
+  //     const { busId, seats } = req.body;
   
-      if (!busId || !seats) {
-        return res.status(400).json({ error: "BusId and seats are required" });
-      }
+  //     if (!busId || !seats) {
+  //       return res.status(400).json({ error: "BusId and seats are required" });
+  //     }
   
-      const bus = await Bus.findById(busId);
-      if (!bus) {
-        return res.status(404).json({ error: "Bus not found" });
-      }
+  //     const bus = await Bus.findById(busId);
+  //     if (!bus) {
+  //       return res.status(404).json({ error: "Bus not found" });
+  //     }
   
-      // Check if any selected seat is already booked
-      const alreadyBooked = seats.some(seat =>
-        bus.bookedSeats.includes(seat)
-      );
+  //     // Check if any selected seat is already booked
+  //     const alreadyBooked = seats.some(seat =>
+  //       bus.bookedSeats.includes(seat)
+  //     );
   
-      if (alreadyBooked) {
-        return res.status(400).json({
-          error: "Some seats are already booked by another user"
-        });
-      }
+  //     if (alreadyBooked) {
+  //       return res.status(400).json({
+  //         error: "Some seats are already booked by another user"
+  //       });
+  //     }
   
-      // Add seats to bookedSeats
-      bus.bookedSeats.push(...seats);
-      await bus.save();
+  //     // Add seats to bookedSeats
+  //     bus.bookedSeats.push(...seats);
+  //     await bus.save();
   
-      return res.json({
-        success: true,
-        message: "Seats booked successfully!",
-        bookedSeats: bus.bookedSeats
-      });
-    } catch (error) {
-      return res.status(500).json({ error: "Server error", details: error.message });
-    }
-  };
+  //     return res.json({
+  //       success: true,
+  //       message: "Seats booked successfully!",
+  //       bookedSeats: bus.bookedSeats
+  //     });
+  //   } catch (error) {
+  //     return res.status(500).json({ error: "Server error", details: error.message });
+  //   }
+  // };
   export const checkSeatAvailability = async (req, res) => {
     try {
       const { busId, seat } = req.body;
@@ -126,3 +126,38 @@ export const searchBuses = async (req, res) => {
   };
   
 
+  export const bookSeats = async (req, res) => {
+    try {
+      const { busId, seats } = req.body;
+  
+      const bus = await Bus.findById(busId);
+      if (!bus) return res.status(404).json({ error: "Bus not found" });
+  
+      // Already booked?
+      const alreadyBooked = seats.some((s) =>
+        bus.bookedSeats.includes(s)
+      );
+      if (alreadyBooked)
+        return res.status(400).json({ error: "Seat already booked" });
+  
+      // Mark booked
+      bus.bookedSeats.push(...seats);
+  
+      // Remove from locked seats
+      bus.lockedSeats = bus.lockedSeats.filter(
+        (s) => !seats.includes(s)
+      );
+  
+      bus.availableSeats -= seats.length;
+  
+      await bus.save();
+  
+      return res.json({
+        success: true,
+        message: "Seats booked successfully!",
+        bookedSeats: bus.bookedSeats,
+      });
+    } catch (error) {
+      return res.status(500).json({ error: error.message });
+    }
+  };

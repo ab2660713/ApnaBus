@@ -60,9 +60,10 @@ function BusDetailsPage() {
 
     // ⛔ CALL BACKEND TO LOCK SEAT
     try {
-      const res = await axios.post("/api/bus/check-seat", {
+      const res = await axios.post("/api/bus/lock-seat", {
         busId: bus._id,
         seatNumber,
+      
       });
 
       if (!res.data.success) {

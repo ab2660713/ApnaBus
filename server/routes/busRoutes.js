@@ -1,5 +1,5 @@
 import express from "express";
-import { getBuses, getBus, searchBuses, bookSeats, checkSeatAvailability, lockSeat }  from '../controllers/busController.js'
+import { getBuses, getBus, searchBuses,  checkSeatAvailability, lockSeat, bookSeats }  from '../controllers/busController.js'
 
 const router = express.Router()
 

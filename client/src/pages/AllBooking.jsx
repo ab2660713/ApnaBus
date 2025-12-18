@@ -4,6 +4,8 @@ import AdminSidebar from "../components/AdminSidebar";
 import { Card, CardContent } from "../components/ui/card";
 import { Eye, Pencil } from "lucide-react";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import { updateBookingStatus } from "../features/admin/adminSlice";
 
 export default function AllBookings() {
   const [bookings, setBookings] = useState([]);
@@ -13,12 +15,13 @@ export default function AllBookings() {
 
   const [editData, setEditData] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-
+  console.log(bookings);
+  
   const handleEdit = (booking) => {
     setEditData({
       _id: booking._id,
       status: booking.status,
-      ticketCount: booking.ticketCount
+      ticketCount: booking.ticketCount,
     });
     setIsOpen(true);
   };
@@ -28,7 +31,7 @@ export default function AllBookings() {
   }, []);
 
   const authHeader = {
-    headers: { Authorization: `Bearer ${token}` }
+    headers: { Authorization: `Bearer ${token}` },
   };
 
   async function fetchBookings() {
@@ -37,7 +40,6 @@ export default function AllBookings() {
       const { data } = await axios.get("/api/admin/view-bookings", authHeader);
 
       setBookings(Array.isArray(data.bookings) ? data.bookings : data);
-
     } catch (err) {
       console.error("Fetch bookings failed", err);
     } finally {
@@ -45,39 +47,39 @@ export default function AllBookings() {
     }
   }
 
-  const updateBooking = async () => {
-    try {
-      const res = await axios.put(
-        `/api/booking/${editData._id}`,
-        {
-          status: editData.status,
-          ticketCount: editData.ticketCount
-        },
-        authHeader
-      );
+  const dispatch = useDispatch();
 
-      toast.success("Booking Updated Successfully!");
+  const updateBooking = () => {
+    dispatch(
+      updateBookingStatus({
+        id: editData._id,
+        status: editData.status,
+        ticketCount: editData.ticketCount,
+        token: token,
+      })
+    )
+      .unwrap()
+      .then(() => {
+        toast.success("Booking Updated Successfully!");
 
-      // 🔥 UI me real-time update
-      setBookings((prev) =>
-        prev.map((b) =>
-          b._id === editData._id ? { ...b, ...editData } : b
-        )
-      );
+        // UI update
+        setBookings((prev) =>
+          prev.map((b) => (b._id === editData._id ? { ...b, ...editData } : b))
+        );
 
-      setIsOpen(false);
-    } catch (error) {
-      console.log(error);
-      toast.error("Failed to Update Booking!");
-    }
+        setIsOpen(false);
+      })
+      .catch(() => {
+        toast.error("Failed to Update Booking!");
+      });
   };
 
   // 🔥 Status Badge Component
   const StatusBadge = ({ status }) => {
     const style = {
-      accepted: "bg-green-100 text-green-700 border border-green-300",
+      completed: "bg-green-100 text-green-700 border border-green-300",
       pending: "bg-yellow-100 text-yellow-700 border border-yellow-300",
-      rejected: "bg-red-100 text-red-700 border border-red-300"
+      cancelled: "bg-red-100 text-red-700 border border-red-300",
     };
 
     return (
@@ -95,7 +97,9 @@ export default function AllBookings() {
 
       <main className="flex-1 p-8">
         <div className="mb-6">
-          <h1 className="text-3xl font-extrabold text-gray-800">All Bookings</h1>
+          <h1 className="text-3xl font-extrabold text-gray-800">
+            All Bookings
+          </h1>
           <p className="text-gray-600 mt-1">
             Full list of all users & their bus bookings.
           </p>
@@ -175,7 +179,6 @@ export default function AllBookings() {
 
                           <td className="py-3 px-4">
                             <div className="flex gap-3 items-center">
-
                               <Eye className="w-5 h-5 text-gray-600 hover:text-black cursor-pointer" />
 
                               {b.status !== "accepted" && (
@@ -214,8 +217,9 @@ export default function AllBookings() {
                 className="w-full border p-2 rounded mb-4"
               >
                 <option value="pending">Pending</option>
-                <option value="accepted">Accepted</option>
-                <option value="rejected">Rejected</option>
+                <option value="booked">Booked</option>
+                <option value="cancelled">Cancelled</option>
+                <option value="completed">Completed</option>
               </select>
 
               <label className="block mb-1 font-medium">Ticket Count</label>

@@ -13,7 +13,7 @@ router.post('/:bsid', protect, addBooking)
 router.put('/:bid', protect, cancelBooking)
 
 router.patch("/cancel/:bid", protect, cancelBooking);
-router.put("/booking/:bid", protect, updateBooking);
+router.put("/booking/:id", protect, updateBooking);
 // router.get("/booked-seats", protect, getBookedSeats);
 
 

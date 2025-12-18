@@ -23,7 +23,7 @@ const router = express.Router();
 
 router.post('/bus', adminProtect, addBus);
 router.put('/bus/:bsid', adminProtect, updateBus);
-router.put('/booking/:bid', adminProtect, updateBooking);
+router.put('/booking/:id', adminProtect, updateBooking);
 router.put('/user/:uid', adminProtect, updateUser);
 router.get('/buses', adminProtect, getBuses);
 router.get('/bus/:id', adminProtect, getBus);
